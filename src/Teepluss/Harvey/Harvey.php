@@ -99,9 +99,6 @@ abstract class Harvey extends Model {
         // Transform format to Laravel rules.
         $laws = $this->transform($rules);
 
-
-        sd($laws);
-
         if ($this->validate($laws))
         {
             return parent::save($options);
