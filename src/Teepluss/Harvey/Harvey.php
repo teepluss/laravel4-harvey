@@ -25,16 +25,15 @@ abstract class Harvey extends Model {
     public function validate(array $rules, array $messages = array(), array $inputs = array())
     {
         // Define passed state.
-        $passed = false;
-
-        // Validation rules.
-        $rules = ($rules) ?: static::$rules;
+        $passed = true;
 
         // Validation custom messages.
         $messages = ($messages) ?: static::$messages;
 
         // Input fill in.
-        $inputs = ($inputs) ?: Input::all();
+        $inputs = ($inputs) ?: $this->getDirty();
+
+        //sd($rules);
 
         // Validator instance.
         $validator = Validator::make($inputs, $rules, $messages);
@@ -59,6 +58,9 @@ abstract class Harvey extends Model {
         // Event.
         $event = $this->exists ? 'update' : 'create';
 
+        // Compare with changed fields.
+        $changes = $this->getDirty();
+
         foreach ($rules as $key => $rule)
         {
             if (preg_match('|on([A-Z][a-z]+)|', $key, $matches))
@@ -72,6 +74,8 @@ abstract class Harvey extends Model {
             }
             else
             {
+                if ( ! array_key_exists($key, $changes)) continue;
+
                 $rule = is_array($rule) ? $rule : explode('|', $rule);
 
                 if (array_key_exists($key, $laws))
@@ -92,9 +96,6 @@ abstract class Harvey extends Model {
     {
         // Rule defined.
         $rules = static::$rules;
-
-        // Compare with changed fields.
-        $changes = $this->getDirty();
 
         // Transform format to Laravel rules.
         $laws = $this->transform($rules);
