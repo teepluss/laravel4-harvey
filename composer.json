@@ -1,6 +1,10 @@
 {
     "name": "teepluss/harvey",
-    "description": "",
+    "description": "Laravel4 separate validation",
+    "keywords": ["Validation", "Laravel", "Laravel4"],
+    "homepage": "https://github.com/teepluss/laravel4-harvey",
+    "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Teepluss",
