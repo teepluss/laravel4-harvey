@@ -1,4 +1,4 @@
-## Domain Registra API Wrapper
+## Harvey is self validation for Laravel 4
 
 This is my internal project, not yet complete.
 
