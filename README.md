@@ -25,6 +25,11 @@ You'll then need to run `composer install` to download it and have the autoloade
 ~~~php
 class Blog extends \Teepluss\Harvey\Harvey {
 
+    /**
+     * Define rules.
+     *
+     * @type array
+     */
     public static $rules = array(
         'title'       => 'required',
         'description' => 'min:20|max:500',
@@ -34,6 +39,15 @@ class Blog extends \Teepluss\Harvey\Harvey {
         'onUpdate'    => array(
             'description' => 'required_with:title'
         )
+    );
+
+    /**
+     * Custom validation messages.
+     *
+     * @type array
+     */
+    public static $messages = array(
+        'title.required' => 'Please fill title before submitting.'
     );
 
 }
