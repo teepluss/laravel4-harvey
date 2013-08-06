@@ -29,7 +29,7 @@ class Blog extends \Teepluss\Harvey\Harvey {
         'title'       => 'required',
         'description' => 'min:20|max:500',
         'onCreate'    => array(
-            'title' => 'unique|emails'
+            'title' => 'unique|email'
         ),
         'onUpdate'    => array(
             'description' => 'required_with:title'
