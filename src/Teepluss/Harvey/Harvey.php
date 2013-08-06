@@ -33,8 +33,6 @@ abstract class Harvey extends Model {
         // Input fill in.
         $inputs = ($inputs) ?: $this->getDirty();
 
-        //sd($rules);
-
         // Validator instance.
         $validator = Validator::make($inputs, $rules, $messages);
 
