@@ -1,0 +1,20 @@
+{
+    "name": "teepluss/harvey",
+    "description": "",
+    "authors": [
+        {
+            "name": "Teepluss",
+            "email": "admin@laravel.in.th"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.0.x"
+    },
+    "autoload": {
+        "psr-0": {
+            "Teepluss\\Harvey": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
