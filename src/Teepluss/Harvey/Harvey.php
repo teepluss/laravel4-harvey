@@ -101,6 +101,7 @@ abstract class Harvey extends Model {
 
         foreach ($rules as $key => $rule)
         {
+            // Filter events.
             if (preg_match('|on([A-Z][a-z]+)|', $key, $matches))
             {
                 $on = strtolower($matches[1]);
@@ -110,6 +111,7 @@ abstract class Harvey extends Model {
                     $this->transform($rule, $laws);
                 }
             }
+            // Transform rules.
             else
             {
                 if ( ! array_key_exists($key, $changes)) continue;
