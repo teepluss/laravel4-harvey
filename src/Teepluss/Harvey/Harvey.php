@@ -8,12 +8,32 @@ use Illuminate\Support\Facades\Validator;
 
 abstract class Harvey extends Model {
 
+    /**
+     * Validation rules.
+     *
+     * @var array
+     */
     public static $rules = array();
 
+    /**
+     * Validation custom messages.
+     *
+     * @var array
+     */
     public static $messages = array();
 
+    /**
+     * Validation errors.
+     *
+     * @var \Illuminate\Support\MessageBag
+     */
     protected $errors;
 
+    /**
+     * New instance for Harvey.
+     *
+     * @param array $attributes
+     */
     public function __construct(array $attributes = array())
     {
         parent::__construct($attributes);
@@ -22,6 +42,14 @@ abstract class Harvey extends Model {
         $this->errors = new MessageBag;
     }
 
+    /**
+     * Model validation.
+     *
+     * @param  array  $rules
+     * @param  array  $messages
+     * @param  array  $inputs
+     * @return boolean
+     */
     public function validate(array $rules, array $messages = array(), array $inputs = array())
     {
         // Define passed state.
@@ -46,12 +74,24 @@ abstract class Harvey extends Model {
         return $passed;
     }
 
+    /**
+     * Get error messages.
+     *
+     * @return  \Illuminate\Support\MessageBag
+     */
     public function errors()
     {
         return $this->errors;
     }
 
-    protected function transform($rules, &$laws = array())
+    /**
+     * Transform separate validation to Laravel format.
+     *
+     * @param  array  $rules
+     * @param  array  $laws
+     * @return array
+     */
+    protected function transform(array $rules, &$laws = array())
     {
         // Event.
         $event = $this->exists ? 'update' : 'create';
@@ -90,6 +130,12 @@ abstract class Harvey extends Model {
         return $laws;
     }
 
+    /**
+     * Internal saving before save.
+     *
+     * @param  array  $options
+     * @return mixed
+     */
     protected function internalSave(array $options)
     {
         // Rule defined.
@@ -106,9 +152,25 @@ abstract class Harvey extends Model {
         return false;
     }
 
+    /**
+     * Validate and save.
+     *
+     * @param  array  $options
+     * @return mixed
+     */
     public function save(array $options = array())
     {
         return $this->internalSave($options);
+    }
+
+    /**
+     * Force save using original Laravel method.
+     *
+     * @return object
+     */
+    public function forceSave()
+    {
+        return paranet::save();
     }
 
 }
