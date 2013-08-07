@@ -129,8 +129,6 @@ abstract class Harvey extends Model {
             }
         }
 
-        sd($laws);
-
         return $laws;
     }
 
