@@ -54,6 +54,13 @@ $blog->title = 'New blog';
 $blog->description = 'This is my first entry';
 $blog->url = 'http://www.domain.com';
 
+// Addition rule for another input.
+/*$blog->addValidate(
+    array('other' => Input::get('other')),
+    array('other' => 'required|email'),
+    array('other.required' => 'sss')
+);*/
+
 $blog->save();
 
 if ( ! $blog->save())
