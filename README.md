@@ -7,20 +7,12 @@ This is my internal project, not yet complete.
 To get the lastest version of Theme simply require it in your `composer.json` file.
 
 ~~~
-"repositories" : [
-    {
-        "type": "vcs",
-        "url": "https://github.com/teepluss/laravel4-harvey"
-    }
-],
-"require": {
-    "teepluss/harvey": "dev-master"
-}
+"teepluss/harvey": "dev-master"
 ~~~
 
 You'll then need to run `composer install` to download it and have the autoloader updated.
 
-##Usage
+## Usage
 
 ~~~php
 class Blog extends \Teepluss\Harvey\Harvey {
@@ -31,13 +23,13 @@ class Blog extends \Teepluss\Harvey\Harvey {
      * @type array
      */
     public static $rules = array(
-        'title'       => 'required',
-        'description' => 'min:20|max:500',
+        'description' => 'min:10|max:500',
         'onCreate'    => array(
-            'title' => 'unique|email'
+            'title' => 'required',
+            'url' => 'active_url'
         ),
         'onUpdate'    => array(
-            'description' => 'required_with:title'
+            'title' => 'required'
         )
     );
 
@@ -53,11 +45,16 @@ class Blog extends \Teepluss\Harvey\Harvey {
 }
 ~~~
 
+### This code for creating a new content.
+
 ~~~php
 $blog = new Blog;
 
-$blog->title = Input::get('title');
-$blog->description = Input::get('description');
+$blog->title = 'New blog';
+$blog->description = 'This is my first entry';
+$blog->url = 'http://www.domain.com';
+
+$blog->save();
 
 if ( ! $blog->save())
 {
@@ -65,4 +62,54 @@ if ( ! $blog->save())
 
     return Redirect::back()->withErrors($errors)->withInput();
 }
+~~~
+
+### Validation rules for creating.
+
+~~~php
+array(3) [
+    'description' => array(2) [
+        string (6) "min:10"
+        string (7) "max:500"
+    ]
+    'title' => array(1) [
+        string (8) "required"
+    ]
+    'url' => array(1) [
+        string (10) "active_url"
+    ]
+]
+~~~
+
+### This code for updating an exists content.
+
+~~~php
+$blog = Blog::find(1);
+
+$blog->title = 'New blog';
+$blog->description = 'This is my first entry';
+$blog->url = 'http://www.domain.com';
+
+$blog->save();
+
+if ( ! $blog->save())
+{
+    $errors = $blog->errors();
+
+    return Redirect::back()->withErrors($errors)->withInput();
+}
+~~~
+
+### Validation rules for updating.
+
+~~~php
+array(2) [
+    'description' => array(2) [
+        string (6) "min:10"
+        string (7) "max:500"
+    ]
+    'title' => array(1) [
+        string (8) "required"
+    ]
+]
 ~~~
