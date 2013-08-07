@@ -22,6 +22,8 @@ abstract class Harvey extends Model {
      */
     public static $messages = array();
 
+    protected $addition = array();
+
     /**
      * Validation errors.
      *
@@ -56,10 +58,18 @@ abstract class Harvey extends Model {
         $passed = true;
 
         // Validation custom messages.
-        $messages = ($messages) ?: static::$messages;
+        $messages = $messages ?: static::$messages;
 
         // Input fill in.
         $inputs = ($inputs) ?: $this->getDirty();
+
+        foreach (array('inputs', 'rules', 'messages') as $add)
+        {
+            if (isset($this->addition[$add]))
+            {
+                ${$add} = array_merge(${$add}, $this->addition[$add]);
+            }
+        }
 
         // Validator instance.
         $validator = Validator::make($inputs, $rules, $messages);
@@ -71,7 +81,26 @@ abstract class Harvey extends Model {
             $this->errors = $validator->messages();
         }
 
+        // Unset addition rules.
+        $this->addition = array();
+
         return $passed;
+    }
+
+    /**
+     * Addition validate rules.
+     *
+     * @param mixed  $inputs
+     * @param array  $rules
+     * @param array  $messages
+     */
+    public function addValidate($inputs, array $rules = array(), array $messages = array())
+    {
+        $this->addition['inputs'] = $inputs;
+
+        $this->addition['rules'] = $rules;
+
+        $this->addition['messages'] = $messages;
     }
 
     /**
@@ -141,10 +170,10 @@ abstract class Harvey extends Model {
     protected function internalSave(array $options)
     {
         // Rule defined.
-        $rules = static::$rules;
+        $staticRules = static::$rules;
 
         // Transform format to Laravel rules.
-        $laws = $this->transform($rules);
+        $laws = $this->transform($staticRules);
 
         if ($this->validate($laws))
         {
@@ -170,9 +199,9 @@ abstract class Harvey extends Model {
      *
      * @return object
      */
-    public function forceSave()
+    public function forceSave(array $options = array())
     {
-        return paranet::save();
+        return paranet::save($options);
     }
 
 }
