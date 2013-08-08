@@ -168,7 +168,7 @@ abstract class Harvey extends Model {
      * @param  array  $laws
      * @return array
      */
-    protected function transform($event, array $rules, &$laws = array())
+    public function transform($event, array $rules, &$laws = array())
     {
         // Compare with changed fields.
         $changes = $this->getDirty();
