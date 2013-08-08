@@ -30,6 +30,13 @@ abstract class Harvey extends Model {
     protected $addition = array();
 
     /**
+     * Validator.
+     *
+     * @var \Illuminate\Validation\Validators
+     */
+    protected $validator;
+
+    /**
      * Validation errors.
      *
      * @var \Illuminate\Support\MessageBag
@@ -45,8 +52,13 @@ abstract class Harvey extends Model {
     {
         parent::__construct($attributes);
 
+        // Validator.
+        $this->validator = \App::make('validator');
+
         // Message bag.
         $this->errors = new MessageBag;
+
+
     }
 
     /**
@@ -108,7 +120,7 @@ abstract class Harvey extends Model {
         }
 
         // Validator instance.
-        $validator = Validator::make($inputs, $rules, $messages);
+        $validator = $this->validator->make($inputs, $rules, $messages);
 
         if ($validator->fails())
         {
