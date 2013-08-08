@@ -22,6 +22,11 @@ abstract class Harvey extends Model {
      */
     public static $messages = array();
 
+    /**
+     * Addition rules.
+     *
+     * @var array
+     */
     protected $addition = array();
 
     /**
@@ -42,6 +47,37 @@ abstract class Harvey extends Model {
 
         // Message bag.
         $this->errors = new MessageBag;
+    }
+
+    /**
+     * Model event for validation.
+     *
+     * @return mixed
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        // Validation rules.
+        $rules = static::$rules;
+
+        // Events.
+        $events = array('creat', 'updat');
+
+        foreach ($events as $event)
+        {
+            $eventing = $event.'ing';
+
+            static::$eventing(function($model) use ($event, $rules)
+            {
+                $rules = $model->transform($event.'e', $rules);
+
+                if ( ! $model->validate($rules))
+                {
+                    return false;
+                }
+            });
+        }
     }
 
     /**
@@ -120,11 +156,8 @@ abstract class Harvey extends Model {
      * @param  array  $laws
      * @return array
      */
-    protected function transform(array $rules, &$laws = array())
+    protected function transform($event, array $rules, &$laws = array())
     {
-        // Event.
-        $event = $this->exists ? 'update' : 'create';
-
         // Compare with changed fields.
         $changes = $this->getDirty();
 
@@ -137,7 +170,7 @@ abstract class Harvey extends Model {
 
                 if ($on == $event)
                 {
-                    $this->transform($rule, $laws);
+                    $this->transform($event, $rule, $laws);
                 }
             }
             // Transform rules.
@@ -159,49 +192,6 @@ abstract class Harvey extends Model {
         }
 
         return $laws;
-    }
-
-    /**
-     * Internal saving before save.
-     *
-     * @param  array  $options
-     * @return mixed
-     */
-    protected function internalSave(array $options)
-    {
-        // Rule defined.
-        $staticRules = static::$rules;
-
-        // Transform format to Laravel rules.
-        $laws = $this->transform($staticRules);
-
-        if ($this->validate($laws))
-        {
-            return parent::save($options);
-        }
-
-        return false;
-    }
-
-    /**
-     * Validate and save.
-     *
-     * @param  array  $options
-     * @return mixed
-     */
-    public function save(array $options = array())
-    {
-        return $this->internalSave($options);
-    }
-
-    /**
-     * Force save using original Laravel method.
-     *
-     * @return object
-     */
-    public function forceSave(array $options = array())
-    {
-        return paranet::save($options);
     }
 
 }
