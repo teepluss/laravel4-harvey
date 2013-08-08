@@ -175,7 +175,6 @@ abstract class Harvey extends Model {
 
         foreach ($rules as $key => $rule)
         {
-            // Filter events.
             if (preg_match('|on([A-Z][a-z]+)|', $key, $matches))
             {
                 $on = strtolower($matches[1]);
@@ -185,13 +184,15 @@ abstract class Harvey extends Model {
                     $this->transform($event, $rule, $laws);
                 }
             }
-            // Transform rules.
             else
             {
+                // No reason to validate clean inputs.
                 if ( ! array_key_exists($key, $changes)) continue;
 
+                // Changing rules to array.
                 $rule = is_array($rule) ? $rule : explode('|', $rule);
 
+                // Merge rule to existing field.
                 if (array_key_exists($key, $laws))
                 {
                     $rule = array_merge($laws[$key], $rule);
