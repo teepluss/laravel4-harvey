@@ -71,12 +71,15 @@ abstract class Harvey extends Model {
         // Validation rules.
         $rules = static::$rules;
 
+        // Model event fired.
         static::saving(function($model) use ($rules)
         {
             $event = $model->exists ? 'update' : 'create';
 
+            // Transform validate rules to Laravel rules.
             $rules = $model->transform($event, $rules);
 
+            // Let Harvey validate.
             if ( ! $model->validate($rules))
             {
                 return false;
