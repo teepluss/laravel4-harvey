@@ -57,8 +57,6 @@ abstract class Harvey extends Model {
 
         // Message bag.
         $this->errors = new MessageBag;
-
-
     }
 
     /**
@@ -73,23 +71,17 @@ abstract class Harvey extends Model {
         // Validation rules.
         $rules = static::$rules;
 
-        // Events.
-        $events = array('creat', 'updat');
-
-        foreach ($events as $event)
+        static::saving(function($model) use ($rules)
         {
-            $eventing = $event.'ing';
+            $event = $model->exists ? 'update' : 'create';
 
-            static::$eventing(function($model) use ($event, $rules)
+            $rules = $model->transform($event, $rules);
+
+            if ( ! $model->validate($rules))
             {
-                $rules = $model->transform($event.'e', $rules);
-
-                if ( ! $model->validate($rules))
-                {
-                    return false;
-                }
-            });
-        }
+                return false;
+            }
+        });
     }
 
     /**
