@@ -104,7 +104,7 @@ abstract class Harvey extends Model {
         $messages = $messages ?: static::$messages;
 
         // Input fill in.
-        $inputs = ($inputs) ?: $this->getDirty();
+        $inputs = ($inputs) ?: $this->getDirty() + $this->getAttributes();
 
         foreach (array('inputs', 'rules', 'messages') as $add)
         {
