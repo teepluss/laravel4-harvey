@@ -61,8 +61,6 @@ $blog->url = 'http://www.domain.com';
     array('other.required' => 'sss')
 );*/
 
-$blog->save();
-
 if ( ! $blog->save())
 {
     $errors = $blog->errors();
