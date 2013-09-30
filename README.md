@@ -118,3 +118,9 @@ array(2) [
     ]
 ]
 ~~~
+
+## Support or Contact
+
+If you have some problem, Contact teepluss@gmail.com
+
+<a href='http://www.pledgie.com/campaigns/22201'><img alt='Click here to lend your support to: Donation and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/22201.png?skin_name=chrome' border='0' /></a>
