@@ -42,6 +42,19 @@ class Blog extends \Teepluss\Harvey\Harvey {
         'title.required' => 'Please fill title before submitting.'
     );
 
+    /**
+     * Event before validate.
+     *
+     * @return voide
+     */
+    protected function beforeValidate()
+    {
+        /*$validator->sometimes('description', 'numeric', function($input)
+        {
+            return $input->title == 'tee';
+        });*/
+    }
+
 }
 ~~~
 
