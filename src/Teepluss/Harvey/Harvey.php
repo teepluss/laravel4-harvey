@@ -117,6 +117,9 @@ abstract class Harvey extends Model {
         // Validator instance.
         $validator = $this->validator->make($inputs, $rules, $messages);
 
+        // Fire event before validate.
+        $this->beforeValidate($validator);
+
         if ($validator->fails())
         {
             $passed = false;
@@ -128,6 +131,19 @@ abstract class Harvey extends Model {
         $this->addition = array();
 
         return $passed;
+    }
+
+    /**
+     * Hook before validate.
+     *
+     * This is work with validate sometimes.
+     *
+     * @param  Validator $validator
+     * @return void
+     */
+    protected function beforeValidate($validator)
+    {
+        //
     }
 
     /**
