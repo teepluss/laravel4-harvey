@@ -143,7 +143,10 @@ abstract class Harvey extends Model {
      */
     protected function beforeValidate($validator)
     {
-        //
+        // $validator->sometimes('tax', 'required|numeric', function($input)
+        // {
+        //     return $input->amount >= 100;
+        // });
     }
 
     /**
