@@ -23,6 +23,13 @@ abstract class Harvey extends Model {
     public static $messages = array();
 
     /**
+     * Validation custom attributes.
+     *
+     * @var array
+     */
+    public static $labels = array();
+
+    /**
      * Addition rules.
      *
      * @var array
@@ -95,7 +102,7 @@ abstract class Harvey extends Model {
      * @param  array  $inputs
      * @return boolean
      */
-    public function validate(array $rules, array $messages = array(), array $inputs = array())
+    public function validate(array $rules, array $messages = array(), array $inputs = array(), $labels = array())
     {
         // Define passed state.
         $passed = true;
@@ -106,7 +113,10 @@ abstract class Harvey extends Model {
         // Input fill in.
         $inputs = ($inputs) ?: $this->getDirty() + $this->getAttributes();
 
-        foreach (array('inputs', 'rules', 'messages') as $add)
+        // Attribute name.
+        $labels = ($labels) ?: static::$labels;
+
+        foreach (array('inputs', 'rules', 'messages', 'labels') as $add)
         {
             if (isset($this->addition[$add]))
             {
@@ -116,6 +126,8 @@ abstract class Harvey extends Model {
 
         // Validator instance.
         $validator = $this->validator->make($inputs, $rules, $messages);
+
+        $validator->setAttributeNames($labels);
 
         // Fire event before validate.
         $this->beforeValidate($validator);
@@ -155,14 +167,17 @@ abstract class Harvey extends Model {
      * @param mixed  $inputs
      * @param array  $rules
      * @param array  $messages
+     * @param array  $labels
      */
-    public function addValidate($inputs, array $rules = array(), array $messages = array())
+    public function addValidate($inputs, array $rules = array(), array $messages = array(), $labels = array())
     {
         $this->addition['inputs'] = $inputs;
 
         $this->addition['rules'] = $rules;
 
         $this->addition['messages'] = $messages;
+
+        $this->addition['labels'] = $labels;
     }
 
     /**
@@ -219,6 +234,16 @@ abstract class Harvey extends Model {
         }
 
         return $laws;
+    }
+
+    /**
+     * Set label names.
+     *
+     * @param array $names
+     */
+    public function setLabelNames(array $names)
+    {
+        static::$labels = $names;
     }
 
 }

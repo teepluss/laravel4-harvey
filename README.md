@@ -43,6 +43,31 @@ class Blog extends \Teepluss\Harvey\Harvey {
     );
 
     /**
+     * Custom validation labels.
+
+     * @type array
+     */
+    public static $lables = array(
+        'title' => 'Title'
+    );
+
+    /**
+     * Construct.
+
+     * @param   array $attributes
+     * @return void
+     */
+    public function __construct(array $attributes = array())
+    {
+        parent::__construct($attributes);
+
+        // Custom label.
+        $this->setLabelNames(array(
+            'title'  => trans('labels.product'),
+        ));
+    }
+
+    /**
      * Event before validate.
      *
      * @return voide
@@ -68,11 +93,11 @@ $blog->description = 'This is my first entry';
 $blog->url = 'http://www.domain.com';
 
 // Addition rule for another input.
-/*$blog->addValidate(
+$blog->addValidate(
     array('other' => Input::get('other')),
     array('other' => 'required|email'),
     array('other.required' => 'sss')
-);*/
+);
 
 if ( ! $blog->save())
 {
