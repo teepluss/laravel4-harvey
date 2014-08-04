@@ -74,10 +74,10 @@ class Blog extends \Teepluss\Harvey\Harvey {
      */
     protected function beforeValidate()
     {
-        /*$validator->sometimes('description', 'numeric', function($input)
+        $validator->sometimes('description', 'numeric', function($input)
         {
             return $input->title == 'tee';
-        });*/
+        });
     }
 
 }
