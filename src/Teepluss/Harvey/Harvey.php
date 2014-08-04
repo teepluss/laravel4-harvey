@@ -114,6 +114,11 @@ abstract class Harvey extends Model {
         $inputs = ($inputs) ?: $this->getDirty() + $this->getAttributes();
 
         // Attribute name.
+        if (is_string(static::$labels))
+        {
+            $this->setLabelNames(static::$labels);
+        }
+
         $labels = ($labels) ?: static::$labels;
 
         foreach (array('inputs', 'rules', 'messages', 'labels') as $add)
@@ -239,10 +244,17 @@ abstract class Harvey extends Model {
     /**
      * Set label names.
      *
-     * @param array $names
+     * @param mixed $names
      */
-    public function setLabelNames(array $names)
+    public function setLabelNames($names)
     {
+        if (substr($names, 0, 6) == 'trans:')
+        {
+            $dot = substr($names, 6);
+
+            $names = trans($dot);
+        }
+
         static::$labels = $names;
     }
 
